@@ -1,0 +1,21 @@
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+.App{
+    background-color: #111111;
+    height: 100vh;
+    color: white;
+}
+.main{
+    max-width: 800px;
+    margin: 0px auto;
+}
+a{
+    text-decoration: none;
+}
+a:hover{
+    text-decoration: none;
+    color: inherit;
+}
