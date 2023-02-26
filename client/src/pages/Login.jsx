@@ -4,20 +4,31 @@ import axios from "axios";
 function Login() {
   const [LoginUser, setLoginUser] = useState("");
   const [LoginPass, setLoginPass] = useState("");
+
   async function handlesubmit(evt) {
     evt.preventDefault();
-
-    await axios.post(
-      "http://localhost:4000/login",
-      JSON.stringify({
-        LoginUser,
-        LoginPass,
-      }),
-      {
-        headers: { "Content-Type": "application/json" },
-      }
-    );
+    const response = await axios
+      .post(
+        "http://localhost:4000/login",
+        JSON.stringify({
+          username: LoginUser,
+          password: LoginPass,
+        }),
+        {
+          headers: { "Content-Type": "application/json" },
+        }
+      )
+      .catch((e) => {
+        console.log(e.response.status)
+        if (e.response.status === 402) {
+          alert("mo user found");
+        } else {
+          alert("incorrect password")
+        }
+      });
+      alert("login")
   }
+
   return (
     <form
       onSubmit={handlesubmit}
