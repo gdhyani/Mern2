@@ -2,12 +2,14 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { Navigate } from "react-router-dom";
+import Alert from "../Components/Alert";
 
 
 function Register() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [isRegistered, setisRegistered] = useState(false)
+  const [redirectLogin, setredirectLogin] = useState(false);
+  const [alert, setAlert] = useState({there:false,message:""})
   
   const navigate = useNavigate();
 
@@ -27,19 +29,26 @@ function Register() {
       )
       .catch((e) => {
         if(e.response.status!==200){
-          alert("User already exist")
+          setAlert({there:true, message:"User already registered"})
         }else{
-         //registered
+          setAlert({there:true, message:e.response.data})
         }
       });
+      if(response.status ===200){
+        setredirectLogin(true)
+      }
   }
-
+  if(redirectLogin){
+    return <Navigate to="/login" />;
+  }else{
   return (
+  
     <form
       onSubmit={handlesubmit}
       className="flex flex-col gap-3 mt-3 text-center w-3/4 m-auto p-10 "
     >
       <h1 className="text-5xl mb-4 font-bold">Register</h1>
+      <Alert alert={alert.there} alertMess={alert.message}/>
       <input
         className="rounded px-4 py-2 w-3/4 m-auto text-black"
         type="text"
@@ -66,6 +75,6 @@ function Register() {
       </button>
     </form>
   );
-}
+}}
 
 export default Register;

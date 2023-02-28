@@ -3,13 +3,17 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 var md5 = require("md5");
+const jwt = require("jsonwebtoken");
+const cookieParser = require("cookie-parser");
 
 const app = express();
 const { Schema } = mongoose;
+
 mongoose.set("strictQuery", true);
 
-app.use(cors());
+app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
 app.use(express.json());
+app.use(cookieParser());
 
 const url =
   "mongodb+srv://gauravdhyani:dGQuY7vzD716PNMH@mern2.61fizcf.mongodb.net/?retryWrites=true&w=majority";
@@ -27,45 +31,6 @@ const userSchema = new Schema({
 
 const User = mongoose.model("User", userSchema);
 
-async function send_to_db(username, password) {
-  // db = await mongoose.connect(url, {
-  //   useNewUrlParser: true,
-  //   useUnifiedTopology: true,
-  // });
-  // const User1 = await new User({
-  //   username,
-  //   password,
-  // });
-  // try{
-  //   await User1.save();
-  // }catch(err){
-  //   console.log(err.code)
-  // }
-  // db.disconnect();
-}
-
-// async function check_in_db(client, username, password) {
-//   await client.connect();
-//   const checkDb = await client
-//     .db("Users")
-//     .collection("userCred")
-//     .findOne({ username });
-//   console.log(checkDb);
-//   if (checkDb) {
-//     const realpassword = checkDb.password;
-
-//     //check login
-//     if (realpassword === md5(password)) {
-//       console.log("Login Successful");
-//     } else {
-//       console.log("Incorrect login");
-//     }
-//   } else {
-//     console.log("No User");
-//   }
-//   client.close();
-// }
-
 app.get("/", (req, res) => {
   res.send("<p>Server Started On Port 4000</p>");
 });
@@ -79,12 +44,13 @@ app.post("/login", async (req, res) => {
 
   const found = await User.findOne({ username });
   if (!found) {
-    res.status(402);
+    res.status(404);
   } else {
     if (found.password !== md5(password)) {
       res.status(400);
       console.log("incorrect credentials");
     } else {
+      res.status(200)
       console.log("logged in");
     }
   }

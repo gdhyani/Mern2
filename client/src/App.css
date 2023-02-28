@@ -4,13 +4,15 @@
     padding: 0;
 }
 .App{
-    background-color: #111111;
-    height: 100vh;
-    color: white;
+    background-color: #171717;
+    min-height: 100vh;
+    color: #EDEDED ;
+    position:relative;
 }
 .main{
     max-width: 800px;
     margin: 0px auto;
+    padding-bottom: 130px;
 }
 a{
     text-decoration: none;
@@ -19,3 +21,17 @@ a:hover{
     text-decoration: none;
     color: inherit;
 }
+button{
+    background-color: #E94560;
+}
+.footer{
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background-color:#DA0037;
+}
+.alert{
+    background-color:#f8d7da;
+    color:#DA0037;
+}
+/* #444444 DA0037x */
